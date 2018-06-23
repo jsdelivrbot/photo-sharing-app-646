@@ -7,7 +7,7 @@ fs = require('fs'),
 os = require('os'),
 formidable = require('formidable'),
 gm = require('gm'),
-mongoose = require('mongoose').connect("mongodb://ebn646:enen6767@ds159110.mlab.com:59110/photogrid646")
+mongoose = require('mongoose').connect(config.dbURL)
 
 var app = express();
 
@@ -16,7 +16,7 @@ app
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-  .set('port', process.env.PORT || 3000)
+  .set('port', PORT)
   .set('host', config.host)
 
 

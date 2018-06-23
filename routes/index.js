@@ -92,6 +92,12 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         })
     })
 
+    router.get('/voteup/:id', function(req, res, next){
+        singleImageModel.findByIdAndUpdate(req.params.id, {$inc:{votes:1}}, function(err, result){
+            res.send(200, {votes:result.votes});
+        })
+    })    
+
 
     // get the server working with the app
 

@@ -1,3 +1,7 @@
 {
-    "host": "http://localhost:5000"
+    "host": "https://aqueous-tor-85020.herokuapp.com/",
+    "S3AccessKey":"AKIAI5ZS2OJCSP3IW4WA",
+    "S3Secret":"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",
+    "S3Bucket":"photogrid646",
+    "dbURL":"mongodb://ebn646:enen6767@ds159110.mlab.com:59110/photogrid646"
 }
