@@ -4,13 +4,14 @@
 <head>
   <% include ../partials/header.ejs %>
     <script>
+      var url = '{{host}}';
+      console.log(url)
       var host = window.location.host;
       if(window.location.host == 'localhost:5000'){
         host = 'http://'+window.location.host;
       }else{
         host = 'https://aqueous-tor-85020.herokuapp.com'
       }
-      console.log(host)
       var socket = io(host);
 
       socket.on('status', function (data) {
@@ -86,15 +87,14 @@
 					url: host + '/voteup/' + that.data('photoid'),
 					success: function (data) {
             var parseData = JSON.parse(data.response);
-            console.log(parseData)
-						that.find('h4').html(parseData.votes);
+						that.find('h4').html(parseData.votes +1);
 					}
 				});
 			});
     </script>
 </head>
 
-<body>
+<body id="">
 
   <% include ../partials/nav.ejs %>
 
