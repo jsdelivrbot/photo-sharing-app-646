@@ -7,10 +7,11 @@ fs = require('fs'),
 os = require('os'),
 formidable = require('formidable'),
 gm = require('gm'),
-mongoose = require('mongoose').connect(config.dbURL)
+mongoose = require('mongoose').connect(process.env.DB_URL);
+require('dotenv').config()
 
 var app = express();
-
+console.log(process.env.S3_KEY)
 app
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
@@ -21,9 +22,9 @@ app
 
 
 var knoxClient = knox.createClient({
-	key: "AKIAI5ZS2OJCSP3IW4WA",
-	secret: "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",
-	bucket: "photogrid646"
+	key: process.env.S3_KEY,
+	secret: process.env.S3_SECRET,
+	bucket: process.env.S3_BUCKET
 })
 
 //declare router and render index page
