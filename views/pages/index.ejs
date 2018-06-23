@@ -7,6 +7,8 @@
       var host = window.location.host;
       if(window.location.host == 'localhost:5000'){
         host = 'http://'+window.location.host;
+      }else{
+        host = 'https://aqueous-tor-85020.herokuapp.com/'
       }
       console.log(host)
       var socket = io(host);
