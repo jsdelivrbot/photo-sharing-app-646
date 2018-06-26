@@ -13,15 +13,7 @@
     <div class="container">
       <div class="topDeck">
         <div class="logo">
-          <h1>PhotoGRID</h1>
-        </div>
-        <div class="controls">
-          <input type="file" name="uploadPic" class="uploadPic">
-          <button id="doUpload">Upload</button>
-          <div class="progressBarDiv">
-            <div class="progress"></div>
-          </div>
-          <h5 class="status"></h5>
+          <h1>Admin Page</h1>
         </div>
       </div>
       <div class="gallery">
@@ -39,7 +31,7 @@
       if(window.location.host == 'localhost:5000'){
         host = 'http://'+window.location.host;
       }else{
-        host = 'https://photo-sharing-app-646.herokuapp.com'
+        host = 'https://aqueous-tor-85020.herokuapp.com'
       }
       var socket = io(host);
 
@@ -88,20 +80,12 @@
 					success: function (data) {
 						var imageList = JSON.parse(data.response);
 						for (var i = 0; i < imageList.length; i++) {
-							var str = '<li>';
-							str += '<div class="overlay">';
-							str += '<div class="voteCtrl">';
-							str += '<a href="#" data-photoid="' + imageList[i]._id + '" class="voteUp">';
-							str += '<img src="../images/voteup.png" alt="Click Here to Vote Up !">';
-							str += '<h4>' + imageList[i].votes + '</h4>';
-							str += '</a>';
-							str += '</div>';
-							str += '</div>';
-							str += '<div class="imageHolder">';
+                            var str = '<li>';
+                            str += '<a class="btn btn-lg btn-primary delete" href="javascript:void(0)" role="button" data-photoid="'+ imageList[i]._id +'">delete</a>'
+							str += '<div class="">';
 							str += '<img src="https://s3.amazonaws.com/photogrid646/' + imageList[i].filename + '" alt="">';
-							str += '</div>';
-							str += '</li>';
-
+                            str += '</div>';
+                            str += '</li>';
 							$('.gallery ul').append(str);
 						}
 					}
@@ -110,13 +94,14 @@
 
       renderList();
       
-      $(document).on('click', '.voteUp', function (e) {
-				var that = $(this);
+      $(document).on('click', '.delete', function (e) {
+                var that = $(this);
+                console.log(that.data('photoid'))
 				ajax({
-					url: host + '/voteup/' + that.data('photoid'),
+					url: host + '/delete/' + that.data('photoid'),
 					success: function (data) {
-            var parseData = JSON.parse(data.response);
-						that.find('h4').html(parseData.votes +1);
+                        console.log('Item was deleted!!');
+                        that.renderList();
 					}
 				});
 			});

@@ -8,7 +8,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dev": "webpack --mode development",
     "test": "node test.js"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "stage-2"
+    ]
   },
   "dependencies": {
     "ejs": "^2.5.6",
@@ -21,9 +28,15 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
     "dotenv": "^6.0.0",
     "request": "^2.81.0",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "webpack": "^4.12.1",
+    "webpack-cli": "^3.0.8"
   },
   "repository": {
     "type": "git",

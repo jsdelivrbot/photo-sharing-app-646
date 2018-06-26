@@ -184,11 +184,13 @@
       
       .imageHolder img {
         position: absolute;
-        display:block;
-        width: 300px;
-        top: 50%;
-        bottom: 50%;
+        display: block;
+        width: auto;
+        height: 100%;
+        top: 0;
+        left: 50%;
         margin: auto;
+        transform:translateX(-50%)
       }
       
       .gallery li .overlay {
