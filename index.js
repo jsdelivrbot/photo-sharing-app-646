@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express'),
 path = require('path'),
 PORT = process.env.PORT || 5000,
@@ -8,7 +10,6 @@ os = require('os'),
 formidable = require('formidable'),
 gm = require('gm'),
 mongoose = require('mongoose').connect(process.env.DB_URL);
-require('dotenv').config()
 
 var app = express();
 console.log(process.env.S3_KEY)

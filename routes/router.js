@@ -114,6 +114,11 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         res.render('pages/admin');
     })
 
+    router.post('/', function(req,res,next){
+        console.log('REGISTER USER!!!')
+    })
+
+
 
 
     // get the server working with the app
