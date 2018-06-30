@@ -21,7 +21,7 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
     var host = app.get('host')
 
     router.get('/', function (req, res, next) {
-        res.render('index');
+        res.render('pages/login');
     });
 
     router.post('/upload', function (req, res, next) {
@@ -63,7 +63,6 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
                         })
 
                         req.on('response', function (res) {
-                            console.log('es.statusCode= ',res.statusCode)
                             if (res.statusCode == 200) {
                                 // This means that the file is in the S3 Bucket !
                                 var newImage = new singleImageModel({
@@ -102,31 +101,19 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
             res.send(200, {votes:result.votes});
         })
     })  
-
-    // router.get('/delete/:id', function(req, res, next){
-    //    console.log('Delete Item with id = ',req.params.id);
-    //    singleImageModel.findById(req.params.id, function(err, result){
-    //         var req = knoxClient.del(result.filename).on('response', function(res){
-    //             console.log(res.statusCode);
-    //             console.log(res.headers);
-    //         }).end();
-    //     })
-    //    singleImageModel.findByIdAndRemove(req.params.id, (err, result) => {  
-    //     // As always, handle any potential errors:
-    //     if (err) return res.status(500).send(err);
-    //     // We'll create a simple object to send back with a message and the id of the document that was removed
-    //     // You can really do this however you want, though.
-    //     const response = {
-    //         message: "Image successfully deleted",
-    //         id: result._id
-    //     };
-    //     return res.status(200).send(response);
-    // });
-    // }) 
     
-    router.get('/admin', function(req, res, send){
+    router.get('/login', function(req,res,next){
+        res.render('pages/login');
+    })
+
+    router.get('/gallery', function(req,res,next){
+        res.render('pages/gallery');
+    })
+
+    router.get('/admin', function(req,res,next){
         res.render('pages/admin');
     })
+
 
 
     // get the server working with the app

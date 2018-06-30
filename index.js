@@ -16,7 +16,6 @@ app
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
   .set('port', PORT)
   .set('host', config.host)
 
@@ -32,7 +31,7 @@ var knoxClient = knox.createClient({
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-require('./routes')(express, app, formidable, fs, os, gm, knoxClient, mongoose, io);
+require('./routes/router')(express, app, formidable, fs, os, gm, knoxClient, mongoose, io);
 
 server.listen(app.get('port'), () => {
   console.log(`Photogrid Listening on ${ PORT }`)
