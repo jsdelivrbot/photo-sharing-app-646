@@ -5,10 +5,10 @@
   "engines": {
     "node": "8.9.1"
   },
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js webpack --mode production --config webpack.prod.config.js",
-    "dev": "NODE_ENV=development nodemon index.js & webpack --mode development --config webpack.dev.config.js",
+    "start": "node server.js webpack --mode production --config webpack.prod.config.js",
+    "dev": "NODE_ENV=development nodemon server.js & webpack --mode development --config webpack.dev.config.js",
     "test": "node test.js"
   },
   "babel": {

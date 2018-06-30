@@ -4,7 +4,6 @@ const showStatus = (msg,delay) => {
 }
 
 const ajax = (config) =>{
-    console.log('config = ', config)
     var method = config.method || 'GET';
     var payload = config.payload || null;
     var xhr = new XMLHttpRequest();
