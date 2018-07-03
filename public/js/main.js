@@ -39,7 +39,7 @@ const renderList = () => {
                         </div>
                         <div class="commentCtrl">
                         <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
-                           comments
+                            <span class="glyphicon glyphicon-comment"></span>
                         </a>
                         </div>
                     </div>
