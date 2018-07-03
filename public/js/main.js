@@ -1,7 +1,6 @@
 import io from 'socket.io-client';
 import { ajax, showStatus } from './utils.js';
 import '../scss/main.scss';
-console.log('Hi There')
 var host = window.location.host;
 if (window.location.host == 'localhost:5000') {
     host = 'http://' + window.location.host;
@@ -19,17 +18,16 @@ socket.on('doUpdate', function () {
     renderList();
 })
 
-
 // render list of images on page load
 
 const renderList = () => {
-    $('.gallery ul').html('');
+    $('.gallery .row').html('');
     ajax({
         url: host + '/getimages/',
         success: function (data) {
             var imageList = JSON.parse(data.response);
             for (var i = 0; i < imageList.length; i++) {
-                var str = '<li>';
+                var str = '<div class="col-md-4">';
                 str += '<div class="overlay">';
                 str += '<div class="voteCtrl">';
                 str += '<a href="#" data-photoid="' + imageList[i]._id + '" class="voteUp">';
@@ -41,9 +39,9 @@ const renderList = () => {
                 str += '<div class="imageHolder">';
                 str += '<img src="https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename + '" alt="">';
                 str += '</div>';
-                str += '</li>';
+                str += '</div>';
 
-                $('.gallery ul').append(str);
+                $('.gallery .row').append(str);
             }
         }
     });

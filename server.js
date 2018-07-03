@@ -9,16 +9,30 @@ fs = require('fs'),
 os = require('os'),
 formidable = require('formidable'),
 gm = require('gm'),
-mongoose = require('mongoose').connect(process.env.DB_URL);
+bodyParser = require('body-parser'),
+mongoose = require('mongoose').connect(process.env.DB_URL),
+session = require('express-session');
+MongoStore = require('connect-mongo')(session);
 
 var app = express();
-console.log(process.env.S3_KEY)
-app
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .set('port', PORT)
-  .set('host', config.host)
+//use sessions for tracking logins
+app.use(session({
+  secret: 'work hard',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection
+  })
+}));
+
+// parse incoming login requests requests
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.set('port', PORT);
+app.set('host', config.host)
 
 
 var knoxClient = knox.createClient({

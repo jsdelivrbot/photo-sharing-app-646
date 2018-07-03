@@ -146,20 +146,19 @@
         overflow-y: auto;
       }
       
-      .gallery ul {
+      .gallery .row {
         position:relative;
         margin: 5px;
         padding:0px;
         list-style:none;
-        
       }
       
-      .gallery ul li {
-        width: 300px;
+      .gallery .row > div {
+        //width: 300px;
         height: 250px;
         border:1px solid;
-        float:left;
-        margin:10px;
+        //float:left;
+        // margin:10px;
         background: rgb(0, 0, 0);
         box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
         -webkit-transition:-webkit-transform 0.2s;
@@ -172,7 +171,7 @@
         overflow:hidden;
       }
       
-      .gallery li .imageHolder {
+      .gallery .row .imageHolder {
         position:absolute;
         width: 300px;
         height: 250px;
@@ -193,7 +192,7 @@
         transform:translateX(-50%)
       }
       
-      .gallery li .overlay {
+      .gallery .row .overlay {
         position:absolute;
         width:300px;
         height:250px;
@@ -207,7 +206,7 @@
         transition:opacity 0.5s;
       }
       
-      .gallery li .overlay:hover {
+      .gallery .row .overlay:hover {
         opacity:1;
       }
       
@@ -220,11 +219,11 @@
         bottom: 10px;
       }
       
-      .gallery li .overlay .voteCtrl a img {
+      .gallery .row .overlay .voteCtrl a img {
         position:absolute;
       }
       
-      .gallery li .overlay .voteCtrl h4 {
+      .gallery .row .overlay .voteCtrl h4 {
         position:absolute;
         top:0px;
         color: #FFF;
@@ -235,7 +234,7 @@
         font-size: 14px;
         top: 2px;
       }
-      .gallery ul li:hover {
+      .gallery .row div:hover {
         -webkit-transform:scale(1.05);
         -ms-transform:scale(1.05);
         -moz-transform:scale(1.05);
