@@ -26,19 +26,24 @@ const renderList = () => {
         success: function (data) {
             var imageList = JSON.parse(data.response);
             for (var i = 0; i < imageList.length; i++) {
-                var str = '<div class="col-md-4">';
-                str += '<div class="imageHolder">';
-                str += '<img src="https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename + '" alt="">';
-                str += '</div>';
-                str += '<div class="overlay">';
-                str += '<div class="voteCtrl">';
-                str += '<a href="#" data-photoid="' + imageList[i]._id + '" class="voteUp">';
-                str += '<img src="../images/voteup.png" alt="Click Here to Vote Up !">';
-                str += '<h4>' + imageList[i].votes + '</h4>';
-                str += '</a>';
-                str += '</div>';
-                str += '</div>';
-                str += '</div>';
+                var str = `<div class="col-md-4">
+                    <div class="imageHolder">
+                        <img src="https://s3.amazonaws.com/photobucket-646/` + imageList[i].filename + `" alt="">
+                    </div>
+                    <div class="overlay">
+                        <div class="voteCtrl">
+                        <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
+                            <img src="../images/voteup.png" alt="Click Here to Vote Up !">
+                            <h4>` + imageList[i].votes + `</h4>
+                        </a>
+                        </div>
+                        <div class="commentCtrl">
+                        <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
+                           comments
+                        </a>
+                        </div>
+                    </div>
+                </div>`
 
                 $('.gallery .row').append(str);
             }
@@ -101,8 +106,6 @@ $(function(){
             $(this).val('');
         }
     })
-
-
 })
 
 
