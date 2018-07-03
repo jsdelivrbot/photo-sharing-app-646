@@ -107,8 +107,28 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         res.render('pages/login');
     })
 
+    router.get('/logout', function (req, res, next) {
+        if (req.session) {
+            // delete session object
+            req.session.destroy(function (err) {
+                if (err) {
+                    return next(err);
+                } else {
+                    return res.redirect('/');
+                }
+            });
+        }
+    })
+
     router.get('/gallery', function (req, res, next) {
-        res.render('pages/gallery');
+        if(app.locals.isAuthenticated !== 'undefined'){
+            console.log('user is logged in',app.locals.isAuthenticated)
+            res.render('pages/gallery');
+        }else{
+            console.log('user is logged out',app.locals.isAuthenticated)
+            return res.redirect('/');
+        }
+        
     })
 
     router.get('/admin', function (req, res, next) {
@@ -118,7 +138,6 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
 
     //
     router.post('/', function (req, res, next) {
-        console.log('REGISTER USER!!! ', req.body);
 
         // TODO:confirm that passwords match
 
@@ -129,6 +148,8 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         if (req.body.email &&
             req.body.password &&
             req.body.passwordConf) {
+            console.log('REGISTER USER!!! ', req.body);
+
 
             var userData = {
                 email: req.body.email,
@@ -146,20 +167,23 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
                 }
             });
         } else if (req.body.logemail && req.body.logpassword) {
+            console.log('LOGIN USER!!! ', req.body);
+
             // 2. User is already registered and is logging in
             // Authenticate user and redirect to gallery page is user is found
+
             User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
                 if (error || !user) {
-                  var err = new Error('Wrong email or password.');
-                  err.status = 401;
-                  return next(err);
+                    var err = new Error('Wrong email or password.');
+                    err.status = 401;
+                    return next(err);
                 } else {
-                  req.session.userId = user._id;
-                  return res.redirect('/gallery');
+                    req.session.userId = user._id;
+                    console.log(' User has been found in the database while logging in')
+                    return res.redirect('/gallery');
                 }
-              });
+            });
 
-            console.log(' User has been found in the database while logging in')
         } else {
             // 3. User has not filled out all of the fields
             var err = new Error('All fields required.');

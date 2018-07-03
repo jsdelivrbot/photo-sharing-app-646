@@ -8,7 +8,6 @@ if (window.location.host == 'localhost:5000') {
     host = 'https://photo-sharing-app-646.herokuapp.com'
 }
 var socket = io(host);
-console.log('socket = ', socket)
 
 socket.on('status', function (data) {
     showStatus(data.msg, data.delay);
@@ -28,6 +27,9 @@ const renderList = () => {
             var imageList = JSON.parse(data.response);
             for (var i = 0; i < imageList.length; i++) {
                 var str = '<div class="col-md-4">';
+                str += '<div class="imageHolder">';
+                str += '<img src="https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename + '" alt="">';
+                str += '</div>';
                 str += '<div class="overlay">';
                 str += '<div class="voteCtrl">';
                 str += '<a href="#" data-photoid="' + imageList[i]._id + '" class="voteUp">';
@@ -35,9 +37,6 @@ const renderList = () => {
                 str += '<h4>' + imageList[i].votes + '</h4>';
                 str += '</a>';
                 str += '</div>';
-                str += '</div>';
-                str += '<div class="imageHolder">';
-                str += '<img src="https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename + '" alt="">';
                 str += '</div>';
                 str += '</div>';
 

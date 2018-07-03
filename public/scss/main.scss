@@ -37,7 +37,6 @@
       .container {
         position:relative;
         height:100%;
-        overflow: hidden;
       }
       
       .container .topDeck {
@@ -58,16 +57,7 @@
         height: 70px;
         width: 317px;
       }
-      
-      .topDeck .controls {
-        position:absolute;
-        /* border:1px solid red; */
-        width:700px;
-        height:65px;
-        left:320px;
-        top:1px;
-      }
-      
+  
       .topDeck .controls .uploadPic {
         font-size: 17px;
         color:#FFF;
@@ -103,8 +93,6 @@
         position:absolute;
         width: 594px;
         height: 3px;
-      
-        /* border:1px solid red; */
         top: 44px;
         left: 7px;
       }
@@ -140,10 +128,9 @@
       
       .container .gallery {
         position:relative;
-        background: rgb(41, 41, 41);
+        background: rgb(0,0,0);
         width:100%;
-        height:100%;
-        overflow-y: auto;
+        height:auto;
       }
       
       .gallery .row {
@@ -154,11 +141,6 @@
       }
       
       .gallery .row > div {
-        //width: 300px;
-        height: 250px;
-        border:1px solid;
-        //float:left;
-        // margin:10px;
         background: rgb(0, 0, 0);
         box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
         -webkit-transition:-webkit-transform 0.2s;
@@ -172,7 +154,7 @@
       }
       
       .gallery .row .imageHolder {
-        position:absolute;
+        //position:absolute;
         width: 300px;
         height: 250px;
         top: 0px;
@@ -182,27 +164,19 @@
       }
       
       .imageHolder img {
-        position: absolute;
         display: block;
         width: auto;
         height: 100%;
         top: 0;
         left: 50%;
         margin: auto;
-        transform:translateX(-50%)
       }
       
       .gallery .row .overlay {
-        position:absolute;
-        width:300px;
-        height:250px;
-        /*background:rgba(255,255,255,0.2);*/
+        width:100%;
+        height:50px;
+         background:rgba(255,255,255,0.2);
         z-index:10;
-        opacity:0.2;
-        -webkit-transition:opacity 0.5s;
-        -ms-transition:opacity 0.5s;
-        -moz-transition:opacity 0.5s;
-        -o-transition:opacity 0.5s;
         transition:opacity 0.5s;
       }
       
@@ -212,7 +186,6 @@
       
       .gallery li .overlay .voteCtrl {
         position: absolute;
-        /* background: rgba(255, 255, 255, 0.18); */
         width: 100px;
         height: 20px;
         left: 10px;
@@ -224,20 +197,10 @@
       }
       
       .gallery .row .overlay .voteCtrl h4 {
-        position:absolute;
-        top:0px;
         color: #FFF;
-        margin: 0px;
-        left: 25px;
+        margin-left: 25px;
         font-family: sans-serif;
         font-weight: normal;
         font-size: 14px;
-        top: 2px;
       }
-      .gallery .row div:hover {
-        -webkit-transform:scale(1.05);
-        -ms-transform:scale(1.05);
-        -moz-transform:scale(1.05);
-        -o-transform:scale(1.05);
-        transform:scale(1.05);
-      }
+    

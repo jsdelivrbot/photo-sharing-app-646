@@ -11,7 +11,10 @@ formidable = require('formidable'),
 gm = require('gm'),
 bodyParser = require('body-parser'),
 mongoose = require('mongoose').connect(process.env.DB_URL),
+webpackDevMiddleware = require('webpack-dev-middleware'),
+webpack = require('webpack'),
 session = require('express-session');
+
 MongoStore = require('connect-mongo')(session);
 
 var app = express();
@@ -24,6 +27,30 @@ app.use(session({
     mongooseConnection: mongoose.connection
   })
 }));
+
+// Set up webpack middleware
+console.log('process =',process.env.NODE_ENV)
+if(process.env.NODE_ENV == 'development'){
+  app.use(webpackDevMiddleware(webpack(require('./webpack.dev.config.js')), {
+    mode: 'development',
+    filename: 'bundle.js',
+    publicPath: '/public',
+    stats: {
+      colors: true,
+    },
+    historyApiFallback: true,
+  }));
+}
+
+//apply custom middleware to see if user is logged in
+
+app.use(function(req,res,next){
+  //set global var to see if user is logged in
+  app.locals.isAuthenticated = req.session.userId;
+  next();
+})
+
+
 
 // parse incoming login requests requests
 app.use(bodyParser.json());
