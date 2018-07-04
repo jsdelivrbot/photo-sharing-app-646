@@ -17,6 +17,19 @@ socket.on('doUpdate', function () {
     renderList();
 })
 
+function getImageSize(img, callback) {
+    var $img = $(img);
+
+    var wait = setInterval(function() {
+        var w = $img[0].naturalWidth,
+            h = $img[0].naturalHeight;
+        if (w && h) {
+            clearInterval(wait);
+            callback.apply(this, [w, h]);
+        }
+    }, 30);
+}
+
 // render list of images on page load
 
 const renderList = () => {
@@ -25,7 +38,12 @@ const renderList = () => {
         url: host + '/getimages/',
         success: function (data) {
             var imageList = JSON.parse(data.response);
-            for (var i = 0; i < imageList.length; i++) {
+            for (let i = 0; i < imageList.length; i++) {
+                var img = $('<img />').attr({
+                    'src': 'https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename
+                });
+                // console.log(img.attr('naturalHeight');
+            
                 var str = `<div class="col-md-4">
                     <div class="imageHolder">
                         <img src="https://s3.amazonaws.com/photobucket-646/` + imageList[i].filename + `" alt="">
@@ -44,8 +62,18 @@ const renderList = () => {
                         </div>
                     </div>
                 </div>`
-
+                $('.col-md-4').find('.imageHolder').eq(i).append(img)
                 $('.gallery .row').append(str);
+
+                getImageSize(img, function(width, height) {
+                    console.log(i, width + ',' + height, width/height);
+                    if(width/height > 1){
+                        $('.col-md-4').eq(i).find('img').addClass('wide')
+                    }else{
+                        $('.col-md-4').eq(i).find('img').addClass('tall')
+                    }
+                    });
+
             }
         }
     });
