@@ -198,6 +198,10 @@
           display:flex;
           flex: 1;
         }
+
+        .btn-light{
+          width: 100%;
+        }
       }
       
       .gallery .row .overlay:hover {
@@ -219,11 +223,13 @@
       }
       
       .gallery .row .overlay .voteCtrl h4 {
-        color: #FFF;
         margin-left: 30px;
         font-family: sans-serif;
         font-weight: normal;
         font-size: 14px;
         margin-top: 15px;
       }
-    
+    .header{
+      text-align: center;
+      font-size: 3em;
+    }

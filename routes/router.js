@@ -9,7 +9,6 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         Socket = socket;
     })
 
-
     var singleImage = new mongoose.Schema({
         filename: String,
         votes: Number
@@ -22,7 +21,13 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
     var host = app.get('host')
 
     router.get('/', function (req, res, next) {
-        res.render('pages/login');
+        if(app.locals.isAuthenticated !== 'undefined'){
+            console.log('user is logged in',app.locals.isAuthenticated)
+            return res.redirect('/gallery');
+        }else{
+            console.log('user is logged out',app.locals.isAuthenticated)
+            res.render('pages/login');
+        }
     });
 
     router.post('/upload', function (req, res, next) {
@@ -133,6 +138,10 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
 
     router.get('/admin', function (req, res, next) {
         res.render('pages/admin');
+    })
+
+    router.get('/comments/:id', function (req, res, next) {
+        res.render('pages/comments',{id:req.params.id});
     })
 
 

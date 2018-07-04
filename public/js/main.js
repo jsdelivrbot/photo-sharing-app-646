@@ -41,24 +41,26 @@ const renderList = () => {
             for (let i = 0; i < imageList.length; i++) {
                 var img = $('<img />').attr({
                     'src': 'https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename
-                });
-                // console.log(img.attr('naturalHeight');
-            
+                });            
                 var str = `<div class="col-md-4">
                     <div class="imageHolder">
                         <img src="https://s3.amazonaws.com/photobucket-646/` + imageList[i].filename + `" alt="">
                     </div>
                     <div class="overlay">
                         <div class="voteCtrl">
-                        <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
-                            <img src="../images/voteup.png" alt="Click Here to Vote Up !">
-                            <h4>` + imageList[i].votes + `</h4>
-                        </a>
+                            <button type="button" class="btn btn-light">
+                                <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
+                                    <img src="../images/voteup.png" alt="Click Here to Vote Up !">
+                                    <h4>` + imageList[i].votes + `</h4>
+                                </a>
+                            </button>
                         </div>
                         <div class="commentCtrl">
-                        <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
-                            <span class="glyphicon glyphicon-comment"></span>
-                        </a>
+                        <button type="button" class="btn btn-light">
+                            <a href="/comments/`+ imageList[i]._id + `" data-photoid="` + imageList[i]._id + `" class="voteUp">
+                                <span class="glyphicon glyphicon-comment"></span>
+                            </a>
+                        </button>
                         </div>
                     </div>
                 </div>`
@@ -66,7 +68,6 @@ const renderList = () => {
                 $('.gallery .row').append(str);
 
                 getImageSize(img, function(width, height) {
-                    console.log(i, width + ',' + height, width/height);
                     if(width/height > 1){
                         $('.col-md-4').eq(i).find('img').addClass('wide')
                     }else{
