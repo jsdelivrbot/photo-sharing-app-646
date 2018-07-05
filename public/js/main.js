@@ -73,8 +73,7 @@ const renderList = () => {
                     }else{
                         $('.col-md-4').eq(i).find('img').addClass('tall')
                     }
-                    });
-
+                });
             }
         }
     });
