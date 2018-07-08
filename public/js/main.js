@@ -42,30 +42,30 @@ const renderList = () => {
                 var img = $('<img />').attr({
                     'src': 'https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename
                 });            
-                var str = `<div class="col-md-4">
-                    <div class="imageHolder">
-                        <img src="https://s3.amazonaws.com/photobucket-646/` + imageList[i].filename + `" alt="">
+                var str = `<div class="col-md-4 photocard">
+                    <div class="photocard__imageHolder">
                     </div>
                     <div class="overlay">
-                        <div class="voteCtrl">
-                            <button type="button" class="btn btn-light">
+                        <div class="photocard__voteCtrl">
+                            <button type="button" class="btn btn-light button__flex">
                                 <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
                                     <img src="../images/voteup.png" alt="Click Here to Vote Up !">
-                                    <h4>` + imageList[i].votes + `</h4>
+                                    <h6>` + imageList[i].votes + `</h6>
                                 </a>
                             </button>
                         </div>
-                        <div class="commentCtrl">
-                        <button type="button" class="btn btn-light">
+                        <div class="photocard__commentCtrl">
+                        <button type="button" class="btn btn-light button__flex">
                             <a href="/comments/`+ imageList[i]._id + `" data-photoid="` + imageList[i]._id + `" class="voteUp">
-                                <span class="glyphicon glyphicon-comment"></span>
+                                <i class="fas fa-comments"></i>
                             </a>
                         </button>
                         </div>
                     </div>
                 </div>`
-                $('.col-md-4').find('.imageHolder').eq(i).append(img)
                 $('.gallery .row').append(str);
+
+                $('.col-md-4').find('.photocard__imageHolder').eq(i).append(img)
 
                 getImageSize(img, function(width, height) {
                     if(width/height > 1){
@@ -118,7 +118,7 @@ $(document).on('click', '.voteUp', function (e) {
         url: host + '/voteup/' + that.data('photoid'),
         success: function (data) {
             var parseData = JSON.parse(data.response);
-            that.find('h4').html(parseData.votes + 1);
+            that.find('h6').html(parseData.votes + 1);
         }
     });
 });

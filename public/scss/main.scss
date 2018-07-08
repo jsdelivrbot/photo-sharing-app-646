@@ -1,3 +1,5 @@
+@import 'pages/comments';
+@import 'pages/gallery';
 .jumbotron {
   background: #532F8C;
   color: white;
@@ -151,39 +153,6 @@
         position: relative;
         border-radius: 7px;
         overflow:hidden;
-      }
-      
-      .gallery .row .imageHolder {
-        width: 100%;
-        height: 250px;
-        top: 0px;
-        min-width: 300px;
-        min-height: 250px;
-        overflow: hidden;
-      }
-      
-      .imageHolder{
-        position: relative;
-        img{
-          display: block;
-          width: auto;
-          height: 100%;
-          top: 0;
-          left: 50%;
-          margin: auto;
-            &.tall{
-              width: auto;
-              height: 100%;
-            }
-
-            &.wide{
-              position: absolute;
-              top:50%;
-              width: 100%;
-              height: auto;
-              transform:translate(-50%,-50%)
-            }
-          }
       }
       
       .gallery .row .overlay {

@@ -1,0 +1,41 @@
+@import 'buttons.scss';
+
+.photocard{
+    border: 1px solid red;
+    .photocard__imageHolder{
+        position: relative;
+        width: 100%;
+        height: 250px;
+        top: 0px;
+        min-width: 300px;
+        min-height: 250px;
+        overflow: hidden;
+        img{
+            display: block;
+            width: auto;
+            height: 100%;
+            top: 0;
+            left: 50%;
+            margin: auto;
+              &.tall{
+                width: auto;
+                height: 100%;
+              }
+  
+              &.wide{
+                position: absolute;
+                top:50%;
+                width: 100%;
+                height: auto;
+                transform:translate(-50%,-50%)
+              }
+        }
+    }
+
+    .photocard__commentCtrl{
+
+    }
+    .photocard__voteCtrl{
+        
+    }
+}

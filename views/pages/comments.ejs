@@ -10,9 +10,19 @@
 
   <% include ../partials/nav.ejs %>
 
-    <div class="container">
-      This is the comments page. + <%= id %>
+    <div class="container comments">
+      <div class="row">
+        <div class="col-md-6 photocard">
+            This is the photo for id =
+            <%= id %>
+        </div>
+        <div class="col-md-6">
+            This is the comments page for id =
+            <%= id %>
+          </div>
+      </div>
     </div>
     <% include ../partials/footer.ejs %>
 </body>
+
 </html>
