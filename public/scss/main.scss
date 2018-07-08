@@ -1,5 +1,12 @@
 @import 'pages/comments';
 @import 'pages/gallery';
+
+ul {
+  list-style: none;
+  word-wrap: break-word;
+}
+
+
 .jumbotron {
   background: #532F8C;
   color: white;

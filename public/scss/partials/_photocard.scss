@@ -1,7 +1,7 @@
 @import 'buttons.scss';
 
 .photocard{
-    border: 1px solid red;
+    //border: 1px solid red;
     .photocard__imageHolder{
         position: relative;
         width: 100%;
@@ -29,6 +29,24 @@
                 height: auto;
                 transform:translate(-50%,-50%)
               }
+        }
+    }
+
+    .photocard__overlay{
+        width:100%;
+        height:50px;
+         background:rgba(255,255,255,0.2);
+        z-index:10;
+        transition:opacity 0.5s;
+        display:flex;
+
+        > div{
+          display:flex;
+          flex: 1;
+        }
+
+        .btn-light{
+          width: 100%;
         }
     }
 

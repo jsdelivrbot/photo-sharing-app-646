@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import { ajax, showStatus } from './utils.js';
+import { initComments,renderComments } from './comments.js';
 import '../scss/main.scss';
 var host = window.location.host;
 if (window.location.host == 'localhost:5000') {
@@ -29,6 +30,16 @@ function getImageSize(img, callback) {
         }
     }, 30);
 }
+// initailize comments module
+
+var pathArray = window.location.pathname.split( '/' );
+switch(pathArray[1]){
+    case 'comments':
+        initComments(pathArray[2]);
+        break;
+}
+
+
 
 // render list of images on page load
 
@@ -41,14 +52,22 @@ const renderList = () => {
             for (let i = 0; i < imageList.length; i++) {
                 var img = $('<img />').attr({
                     'src': 'https://s3.amazonaws.com/photobucket-646/' + imageList[i].filename
-                });            
+                });     
+                
+                var comments;
+                    if(imageList[i].comments == undefined){
+                        comments = 0;
+                    }else{
+                        comments = imageList[i].comments;
+                    }
+
                 var str = `<div class="col-md-4 photocard">
                     <div class="photocard__imageHolder">
                     </div>
                     <div class="overlay">
                         <div class="photocard__voteCtrl">
                             <button type="button" class="btn btn-light button__flex">
-                                <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
+                                <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `">
                                     <img src="../images/voteup.png" alt="Click Here to Vote Up !">
                                     <h6>` + imageList[i].votes + `</h6>
                                 </a>
@@ -56,8 +75,9 @@ const renderList = () => {
                         </div>
                         <div class="photocard__commentCtrl">
                         <button type="button" class="btn btn-light button__flex">
-                            <a href="/comments/`+ imageList[i]._id + `" data-photoid="` + imageList[i]._id + `" class="voteUp">
+                            <a href="/comments/`+ imageList[i]._id + `" data-photoid="` + imageList[i]._id + `">
                                 <i class="fas fa-comments"></i>
+                                <h6>` + comments + `</h6>
                             </a>
                         </button>
                         </div>

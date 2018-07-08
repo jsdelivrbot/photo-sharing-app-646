@@ -11,7 +11,8 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
 
     var singleImage = new mongoose.Schema({
         filename: String,
-        votes: Number
+        votes: Number,
+        comments: Number
     })
 
     var singleImageModel = mongoose.model('singleImage', singleImage);
@@ -140,10 +141,25 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         res.render('pages/admin');
     })
 
+    // ===================== ROUTE FOR COMMENTS PAGE =================
+
     router.get('/comments/:id', function (req, res, next) {
-        res.render('pages/comments',{id:req.params.id});
+        //1. make call to mongoDB to load image
+        res.render('pages/comments');
     })
 
+    router.get('/getcomments/:id', function (req, res, next) {
+        //1. make call to mongoDB to load image model
+        let id = req.params.id;
+        singleImageModel.findById(id, function (err, result) {
+            if(err){
+                console.log('There was an error = ', err)
+            }else{
+                //res.render('pages/comments', result);
+                res.send(JSON.stringify(result));
+            }
+        });
+    })
 
     //
     router.post('/', function (req, res, next) {
@@ -157,8 +173,6 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         if (req.body.email &&
             req.body.password &&
             req.body.passwordConf) {
-            console.log('REGISTER USER!!! ', req.body);
-
 
             var userData = {
                 email: req.body.email,

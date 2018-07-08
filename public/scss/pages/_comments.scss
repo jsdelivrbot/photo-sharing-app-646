@@ -1,6 +1,16 @@
 @import '../partials/photocard';
 
 .comments{
-    border: 1px solid red;
-    
+    //border: 1px solid blue;    
+
+    .messages{
+        .message{
+            .username{
+                font-weight: 700;
+                overflow: hidden;
+                padding-right: 15px;
+                text-align: right;
+            }
+        }
+    }
 }

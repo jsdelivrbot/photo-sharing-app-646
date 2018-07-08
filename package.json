@@ -8,7 +8,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js webpack --mode production --config webpack.prod.config.js",
-    "dev": "NODE_ENV=development webpack --mode development --config webpack.dev.config.js & nodemon server.js",
+    "dev": "webpack --mode development --config webpack.dev.config.js & nodemon server.js",
     "test": "node test.js"
   },
   "babel": {
