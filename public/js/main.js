@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import { ajax, showStatus } from './utils.js';
-import { initComments,renderComments } from './comments.js';
+require('./comments.js')
 import '../scss/main.scss';
 var host = window.location.host;
 if (window.location.host == 'localhost:5000') {
@@ -32,12 +32,12 @@ function getImageSize(img, callback) {
 }
 // initailize comments module
 
-var pathArray = window.location.pathname.split( '/' );
-switch(pathArray[1]){
-    case 'comments':
-        initComments(pathArray[2]);
-        break;
-}
+// var pathArray = window.location.pathname.split( '/' );
+// switch(pathArray[1]){
+//     case 'comments':
+//         initComments(pathArray[2]);
+//         break;
+// }
 
 
 
@@ -131,6 +131,8 @@ function uploadNow() {
     }
 }
 
+
+//============== ADD COMMENT TO IMAGE =================
 
 $(document).on('click', '.voteUp', function (e) {
     var that = $(this);

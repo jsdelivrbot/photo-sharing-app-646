@@ -32,17 +32,17 @@ app.use(session({
 
 // Set up webpack middleware
 console.log('process =', process.env.NODE_ENV)
-if (process.env.NODE_ENV == 'development') {
-  app.use(webpackDevMiddleware(webpack(require('./webpack.dev.config.js')), {
-    mode: 'development',
-    filename: 'bundle.js',
-    publicPath: '/public',
-    stats: {
-      colors: true,
-    },
-    historyApiFallback: true,
-  }));
-}
+// if (process.env.NODE_ENV == 'development') {
+//   app.use(webpackDevMiddleware(webpack(require('./webpack.dev.config.js')), {
+//     mode: 'development',
+//     filename: 'bundle.js',
+//     publicPath: '/public',
+//     stats: {
+//       colors: true,
+//     },
+//     historyApiFallback: true,
+//   }));
+// }
 
 //apply custom middleware to see if user is logged in
 

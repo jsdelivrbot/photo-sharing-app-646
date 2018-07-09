@@ -12,10 +12,16 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
     var singleImage = new mongoose.Schema({
         filename: String,
         votes: Number,
-        comments: Number
+        comments: Number,
+        messages:[]
     })
 
     var singleImageModel = mongoose.model('singleImage', singleImage);
+
+    var userComment = new mongoose.Schema({ 
+        name: 'string'
+     });
+     
 
     var router = express.Router();
 
@@ -86,10 +92,8 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
                                     fs.unlink(nfile, function () {
                                         console.log('Local File Deleted !');
                                     })
-
                                 }
-                            })
-
+                            });
                             req.end(buf);
                         })
                     })
@@ -101,7 +105,9 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         singleImageModel.find({}, null, { sort: { votes: -1 } }, function (err, result) {
             res.send(JSON.stringify(result));
         })
-    })
+    }) 
+
+    //============ ROUTE FOR ADDING A VOTE TO AN IMAGE ===============
 
     router.get('/voteup/:id', function (req, res, next) {
         singleImageModel.findByIdAndUpdate(req.params.id, { $inc: { votes: 1 } }, function (err, result) {
@@ -109,8 +115,16 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         })
     })
 
-    router.get('/login', function (req, res, next) {
-        res.render('pages/login');
+    //============ ROUTE FOR ADDING A COMMENT TO AN IMAGE ===============
+
+    router.get('/commentup/:id', function (req, res, next) {
+        singleImageModel.findByIdAndUpdate(req.params.id, { $inc: { comments: 1 } }, function (err, result) {
+            console.log('result from backend = ', result)
+            result.messages.push({ message: "I am a brand new message!!"})
+            result.save()
+            .then(console.log('================== I was saved to the database baby!!! ================'))
+            .then(res.send(JSON.stringify(result)));
+        });
     })
 
     router.get('/logout', function (req, res, next) {
