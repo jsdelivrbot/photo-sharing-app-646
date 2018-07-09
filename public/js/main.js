@@ -32,15 +32,6 @@ function getImageSize(img, callback) {
 }
 // initailize comments module
 
-// var pathArray = window.location.pathname.split( '/' );
-// switch(pathArray[1]){
-//     case 'comments':
-//         initComments(pathArray[2]);
-//         break;
-// }
-
-
-
 // render list of images on page load
 
 const renderList = () => {

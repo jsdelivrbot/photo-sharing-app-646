@@ -2,7 +2,7 @@ import { ajax } from './utils.js';
 $(function () {
     var $inputMessage = $('.inputMessage'); // Input message input box
     var $window = $(window);
-    var username = 'ebn646@hotmail.com';
+    var username = 'ebn646@gmail.com';
     var $messages = $('.messages');
     var pathArray = window.location.pathname.split('/');
     var host;
@@ -13,15 +13,33 @@ $(function () {
         host = 'https://photo-sharing-app-646.herokuapp.com'
     }
 
+    var socket = io(host);
+
+    socket.on('status', function (data) {
+        showStatus(data.msg, data.delay);
+    })
+
+    socket.on('doUpdate', function () {
+        renderList();
+    })
+
+    // Whenever the server emits 'new message', update the chat body
+    socket.on('new message', (data) => {
+        addChatMessage(data);
+    });
+
+
     const renderComments = (id) => {
         ajax({
             url: host + '/getcomments/' + id,
             success: function (data) {
-                renderImage(data)
+                var pageData = JSON.parse(data.response);
+                console.log('Data received on the front end ',pageData);
+                renderImage(pageData);
+                renderCommentsList(pageData);
             }
         })
     }
-
 
     switch (pathArray[1]) {
         case 'comments':
@@ -34,7 +52,7 @@ $(function () {
     }))
 
     const renderImage = (data) => {
-        var imageData = JSON.parse(data.response);
+        var imageData = data;
 
         var comments;
         if (imageData.comments == undefined) {
@@ -44,29 +62,40 @@ $(function () {
         }
 
         var str = `<div class="col-md-6 photocard">
-    <div class="photocard__imageHolder">
-        <img src="https://s3.amazonaws.com/photobucket-646/`+ imageData.filename + `"/>
-    </div>
-    <div class="photocard__overlay">
-        <div class="photocard__voteCtrl">
-            <button type="button" class="btn btn-light button__flex">
-                <a href="javascript:void(0)" data-photoid="` + imageData._id + `" class="voteUp">
-                    <img src="../images/voteup.png" alt="Click Here to Vote Up !">
-                    <h6>` + imageData.votes + `</h6>
-                </a>
-            </button>
-        </div>
-        <div class="photocard__commentCtrl">
-        <button type="button" class="btn btn-light button__flex">
-            <a href="/comments/`+ imageData._id + `" data-photoid="` + imageData._id + `">
-                <i class="fas fa-comments"></i>
-                <h6>` + comments + `</h6>
-            </a>
-        </button>
-        </div>
-    </div>
-</div>`
+            <div class="photocard__imageHolder">
+                <img src="https://s3.amazonaws.com/photobucket-646/`+ imageData.filename + `"/>
+            </div>
+            <div class="photocard__overlay">
+                <div class="photocard__voteCtrl">
+                    <button type="button" class="btn btn-light button__flex">
+                        <a href="javascript:void(0)" data-photoid="` + imageData._id + `" class="voteUp">
+                            <img src="../images/voteup.png" alt="Click Here to Vote Up !">
+                            <h6>` + imageData.votes + `</h6>
+                        </a>
+                    </button>
+                </div>
+                <div class="photocard__commentCtrl">
+                <button type="button" class="btn btn-light button__flex">
+                    <a href="javascript:void(0)" data-photoid="` + imageData._id + `">
+                        <i class="fas fa-comments"></i>
+                        <h6>` + comments + `</h6>
+                    </a>
+                </button>
+                </div>
+            </div>
+        </div>`
         $('.comments .row').prepend(str);
+    }
+
+    const renderCommentsList = (data) =>{
+        var commentList = data.messages;
+        for(let i = 0;i < commentList.length; i++){
+           var li =`<li class="message">
+            <span class="username">`+username+`</span>
+            <span class="messageBody">`+commentList[i].message+`</span>
+            </li>`
+            $messages.append(li);
+        }
     }
 
 
@@ -77,7 +106,6 @@ $(function () {
             //send message
             sendMessage();
         }
-
     })
 
     // Sends a chat message
@@ -87,6 +115,9 @@ $(function () {
             username: username,
             message: message
         }))
+
+        // Tell sever to execute 'new message' and send along one parameter
+        socket.emit('new message', message, pathArray[2])
     }
 
 
@@ -118,9 +149,9 @@ $(function () {
     const incrementComments = (id) => {
         ajax({
             url: host + '/commentup/' + id,
-            success: function(results){
+            success: function (results) {
                 var comments = JSON.parse(results.response);
-                console.log('results = ',comments)
+                console.log('results = ', comments)
             }
         })
 

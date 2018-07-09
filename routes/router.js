@@ -7,7 +7,24 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
 
     io.on('connection', function (socket) {
         Socket = socket;
-    })
+
+        // when the client emits 'new message', this listens and executes
+        Socket.on('new message', (msg,path) => {
+            console.log('==========new message sent to server ', msg, path)
+        // we tell the client to execute 'new message'
+        socket.broadcast.emit('new message', {
+          //username: socket.username,
+          message: msg
+        });
+
+        singleImageModel.findByIdAndUpdate(path, { $inc: { comments: 1 } }, function (err, result) {
+            result.messages.push({ message: msg})
+            result.save()
+            .then(console.log('========= I was saved to the DB!!! ==========='));
+        });
+      });
+    });
+
 
     var singleImage = new mongoose.Schema({
         filename: String,
@@ -118,12 +135,10 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
     //============ ROUTE FOR ADDING A COMMENT TO AN IMAGE ===============
 
     router.get('/commentup/:id', function (req, res, next) {
-        singleImageModel.findByIdAndUpdate(req.params.id, { $inc: { comments: 1 } }, function (err, result) {
+        singleImageModel.findById(req.params.id, function (err, result) {
             console.log('result from backend = ', result)
-            result.messages.push({ message: "I am a brand new message!!"})
-            result.save()
-            .then(console.log('================== I was saved to the database baby!!! ================'))
-            .then(res.send(JSON.stringify(result)));
+            //result.messages.push({ message: "I am a brand new message!!"})
+            res.send(JSON.stringify(result));
         });
     })
 
