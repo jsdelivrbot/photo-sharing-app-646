@@ -111,6 +111,7 @@ $(function () {
 
 
     // When client hits ENTER on their keyboard
+    
     $window.keydown(event => {
         // When client hist ENTER on their keyboard
         if (event.which == 13) {
