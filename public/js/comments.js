@@ -1,4 +1,4 @@
-import { ajax,getImageSize } from './utils.js';
+import { ajax, getImageSize } from './utils.js';
 $(function () {
     var $inputMessage = $('.inputMessage'); // Input message input box
     var $window = $(window);
@@ -6,6 +6,7 @@ $(function () {
     var $messages = $('.messages');
     var pathArray = window.location.pathname.split('/');
     var host;
+    var connected = false;
 
     if (window.location.host == 'localhost:5000') {
         host = 'http://' + window.location.host;
@@ -15,6 +16,11 @@ $(function () {
 
     var socket = io(host);
 
+    socket.on('connect', (socket) => {
+        console.log('Socket is connectedon front end.')
+        connected = true;
+    });
+
     socket.on('status', function (data) {
         showStatus(data.msg, data.delay);
     })
@@ -23,18 +29,18 @@ $(function () {
         renderList();
     })
 
-    // Whenever the server emits 'new message', update the chat body
-    socket.on('new message', (data) => {
-        addChatMessage(data);
+    // Whenever the server emits 'new increment number', update the comment count.
+    socket.on('new increment number', (data) => {
+        console.log('new increment message received on the client ', data.comments)
+        incrementComments(data.comments)
     });
-
 
     const renderComments = (id) => {
         ajax({
             url: host + '/getcomments/' + id,
             success: function (data) {
                 var pageData = JSON.parse(data.response);
-                console.log('Data received on the front end ',pageData);
+                console.log('Data received on the front end ', pageData);
                 renderImage(pageData);
                 renderCommentsList(pageData);
             }
@@ -63,7 +69,7 @@ $(function () {
 
         var img = $('<img />').attr({
             'src': 'https://s3.amazonaws.com/photobucket-646/' + imageData.filename
-        });     
+        });
 
         var str = `<div class="photocard__imageHolder">
             </div>
@@ -80,7 +86,7 @@ $(function () {
                 <button type="button" class="btn btn-light button__flex">
                     <a href="javascript:void(0)" data-photoid="` + imageData._id + `">
                         <i class="fas fa-comments"></i>
-                        <h6>` + comments + `</h6>
+                        <h6 class="commentcount">` + comments + `</h6>
                     </a>
                 </button>
                 </div>
@@ -89,21 +95,21 @@ $(function () {
 
         $('.comments .row .photocard').find('.photocard__imageHolder').append(img)
 
-        getImageSize(img, function(width, height) {
-            if(width/height > 1){
+        getImageSize(img, function (width, height) {
+            if (width / height > 1) {
                 $('.comments .row .photocard').find('img').addClass('wide')
-            }else{
+            } else {
                 $('.comments .row').find('.photocard').find('img').addClass('tall')
             }
         });
     }
 
-    const renderCommentsList = (data) =>{
+    const renderCommentsList = (data) => {
         var commentList = data.messages;
-        for(let i = 0;i < commentList.length; i++){
-           var li =`<li class="message">
-            <span class="username">`+username+`</span>
-            <span class="messageBody">`+commentList[i].message+`</span>
+        for (let i = 0; i < commentList.length; i++) {
+            var li = `<li class="message">
+            <span class="username">`+ username + `</span>
+            <span class="messageBody">`+ commentList[i].message + `</span>
             </li>`
             $messages.append(li);
         }
@@ -111,27 +117,37 @@ $(function () {
 
 
     // When client hits ENTER on their keyboard
-    
+
     $window.keydown(event => {
         // When client hist ENTER on their keyboard
         if (event.which == 13) {
             //send message
             sendMessage();
         }
-    })
+    });
+
+    // Prevents input from having injected markup
+    const cleanInput = (input) => {
+        return $('<div/>').text(input).html();
+    }
 
     // Sends a chat message
     const sendMessage = () => {
         var message = $inputMessage.val();
-        addChatMessage(({
-            username: username,
-            message: message
-        }))
-
-        // Tell sever to execute 'new message' and send along one parameter
-        socket.emit('new message', message, pathArray[2])
+        // Prevent markup from being injected into the message
+        message = cleanInput(message);
+        // If there is a non-empty message and a socket connection
+        if (message && connected) {
+            // Clear input
+            $inputMessage.val('');
+            addChatMessage({
+                username: username,
+                message: message
+            });
+            // Tell server to execute 'new message' and send along one parameter
+            socket.emit('new message', message,pathArray[2]);
+        }
     }
-
 
     // Adds the visual chat message to the message list
     const addChatMessage = (data, options) => {
@@ -154,18 +170,9 @@ $(function () {
     const addMessageElement = (el, options) => {
         var $el = $(el);
         $messages.append($el);
-
-        incrementComments(pathArray[2])
     }
 
-    const incrementComments = (id) => {
-        ajax({
-            url: host + '/commentup/' + id,
-            success: function (results) {
-                var comments = JSON.parse(results.response);
-                console.log('results = ', comments)
-            }
-        })
-
+    const incrementComments = (num) => {
+        $('.commentcount').text(num)
     }
 });

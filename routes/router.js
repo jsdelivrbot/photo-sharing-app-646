@@ -12,19 +12,16 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
         Socket.on('new message', (msg,path) => {
             console.log('==========new message sent to server ', msg, path)
         // we tell the client to execute 'new message'
-        socket.broadcast.emit('new message', {
-          //username: socket.username,
-          message: msg
-        });
-
+        
         singleImageModel.findByIdAndUpdate(path, { $inc: { comments: 1 } }, function (err, result) {
             result.messages.push({ message: msg})
             result.save()
-            .then(console.log('========= I was saved to the DB!!! ==========='));
+            .then(
+            socket.broadcast.emit('new message', {message: msg, comments: result.comments}));
+            socket.emit('new increment number', {comments: result.comments});
         });
       });
     });
-
 
     var singleImage = new mongoose.Schema({
         filename: String,
@@ -44,12 +41,14 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
 
     var host = app.get('host')
 
+    var userId;
+
     router.get('/', function (req, res, next) {
-        if(app.locals.isAuthenticated !== 'undefined'){
-            console.log('user is logged in',app.locals.isAuthenticated)
+        if(app.locals.isAuthenticated !== undefined){
+            console.log('user is logged in')
             return res.redirect('/gallery');
         }else{
-            console.log('user is logged out',app.locals.isAuthenticated)
+            console.log('user is logged out')
             res.render('pages/login');
         }
     });
@@ -137,8 +136,7 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
     router.get('/commentup/:id', function (req, res, next) {
         singleImageModel.findById(req.params.id, function (err, result) {
             console.log('result from backend = ', result)
-            //result.messages.push({ message: "I am a brand new message!!"})
-            res.send(JSON.stringify(result));
+            //res.send(JSON.stringify(result));
         });
     })
 
@@ -156,9 +154,13 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
     })
 
     router.get('/gallery', function (req, res, next) {
-        if(app.locals.isAuthenticated !== 'undefined'){
-            console.log('user is logged in',app.locals.isAuthenticated)
-            res.render('pages/gallery');
+        if(app.locals.isAuthenticated !== undefined){
+            console.log('user is logged in',app.locals.isAuthenticated);
+            User.findById(app.locals.isAuthenticated, function(err,result){
+                console.log('user = ', result.email);
+                app.locals.user = result.email;
+            })
+            .then(res.render('pages/gallery',{user: app.locals.user }));
         }else{
             console.log('user is logged out',app.locals.isAuthenticated)
             return res.redirect('/');
