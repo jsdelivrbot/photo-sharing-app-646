@@ -80,9 +80,9 @@ const renderList = () => {
 
                 getImageSize(img, function(width, height) {
                     if(width/height > 1){
-                        $('.col-md-4').eq(i).find('img').addClass('wide')
+                        $('.gallery .row .col-md-4').eq(i).find('img').addClass('wide')
                     }else{
-                        $('.col-md-4').eq(i).find('img').addClass('tall')
+                        $('.gallery .row .col-md-4').eq(i).find('img').addClass('tall')
                     }
                 });
             }

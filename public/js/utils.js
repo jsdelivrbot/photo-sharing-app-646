@@ -18,7 +18,21 @@ const ajax = (config) =>{
     xhr.send(payload);
 }
 
+const getImageSize = (img, callback) => {
+    var $img = $(img);
+
+    var wait = setInterval(function() {
+        var w = $img[0].naturalWidth,
+            h = $img[0].naturalHeight;
+        if (w && h) {
+            clearInterval(wait);
+            callback.apply(this, [w, h]);
+        }
+    }, 30);
+}
+
 module.exports={
     showStatus,
-    ajax
+    ajax,
+    getImageSize
 }

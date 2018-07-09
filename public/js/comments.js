@@ -1,4 +1,4 @@
-import { ajax } from './utils.js';
+import { ajax,getImageSize } from './utils.js';
 $(function () {
     var $inputMessage = $('.inputMessage'); // Input message input box
     var $window = $(window);
@@ -49,7 +49,7 @@ $(function () {
 
     $inputMessage.click((() => {
         $inputMessage.focus();
-    }))
+    }));
 
     const renderImage = (data) => {
         var imageData = data;
@@ -61,9 +61,11 @@ $(function () {
             comments = imageData.comments;
         }
 
-        var str = `<div class="col-md-6 photocard">
-            <div class="photocard__imageHolder">
-                <img src="https://s3.amazonaws.com/photobucket-646/`+ imageData.filename + `"/>
+        var img = $('<img />').attr({
+            'src': 'https://s3.amazonaws.com/photobucket-646/' + imageData.filename
+        });     
+
+        var str = `<div class="photocard__imageHolder">
             </div>
             <div class="photocard__overlay">
                 <div class="photocard__voteCtrl">
@@ -82,9 +84,18 @@ $(function () {
                     </a>
                 </button>
                 </div>
-            </div>
-        </div>`
-        $('.comments .row').prepend(str);
+            </div>`
+        $('.comments .row .photocard').append(str);
+
+        $('.comments .row .photocard').find('.photocard__imageHolder').append(img)
+
+        getImageSize(img, function(width, height) {
+            if(width/height > 1){
+                $('.comments .row .photocard').find('img').addClass('wide')
+            }else{
+                $('.comments .row').find('.photocard').find('img').addClass('tall')
+            }
+        });
     }
 
     const renderCommentsList = (data) =>{
