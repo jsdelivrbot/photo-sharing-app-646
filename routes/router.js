@@ -6,6 +6,7 @@ module.exports = (express, app, formidable, fs, os, gm, knoxClient, mongoose, io
     //console.log('=================='+io)
 
     io.on('connection', function (socket) {
+        console.log('=======================i am connected===========================')
         Socket = socket;
 
         // when the client emits 'new message', this listens and executes

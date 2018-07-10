@@ -71,23 +71,22 @@ var knoxClient = knox.createClient({
 })
 
 //declare router and render index page
-// if (process.env.NODE_ENV = 'development') {
-//   var server = https.createServer({
-//     key:fs.readFileSync('./https/key.pem'),
-//     cert:  fs.readFileSync('./https/cert.pem'),
-//     requestCert: false,
-//     rejectUnauthorized: false
-//   }, app);
+if (process.env.NODE_ENV = 'development') {
+  var server = https.createServer({
+    key:fs.readFileSync('./https/key.pem'),
+    cert:  fs.readFileSync('./https/cert.pem'),
+    secure: true
+  }, app);
 
-//   var io = require('socket.io').listen(server);
+  var io = require('socket.io').listen(server);
 
-//   require('./routes/router')(express, app, formidable, fs, os, gm, knoxClient, mongoose, io);
+  require('./routes/router')(express, app, formidable, fs, os, gm, knoxClient, mongoose, io);
 
-//   server.listen(app.get('port'), () => {
-//     console.log(`Photogrid Listening on ${PORT}`)
-//   });
+  server.listen(app.get('port'), () => {
+    console.log(`Photogrid Listening on ${PORT}`)
+  });
 
-// } else {
+} else {
   var server = require('http').Server(app);
   var io = require('socket.io')(server);
 
@@ -96,5 +95,5 @@ var knoxClient = knox.createClient({
   server.listen(app.get('port'), () => {
     console.log(`Photogrid Listening on ${PORT}`)
   });
-//}
+}
 

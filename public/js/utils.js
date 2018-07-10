@@ -31,8 +31,19 @@ const getImageSize = (img, callback) => {
     }, 30);
 }
 
+const gethost = () =>{
+    var host;
+    if (window.location.host == 'localhost:5000') {
+        host = 'https://' + window.location.host;
+    } else {
+        host = 'https://photo-sharing-app-646.herokuapp.com'
+    }
+    return host;
+}
+
 module.exports={
     showStatus,
     ajax,
-    getImageSize
+    getImageSize,
+    gethost
 }

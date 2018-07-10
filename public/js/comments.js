@@ -1,33 +1,13 @@
-import { ajax, getImageSize } from './utils.js';
-$(function () {
+import { ajax, getImageSize, gethost } from './utils.js';
+
+const init = (host, socket) => {
     var $inputMessage = $('.inputMessage'); // Input message input box
     var $window = $(window);
     var username = 'ebn646@gmail.com';
     var $messages = $('.messages');
     var pathArray = window.location.pathname.split('/');
-    var host;
+    var host = gethost();
     var connected = false;
-
-    if (window.location.host == 'localhost:5000') {
-        host = 'http://' + window.location.host;
-    } else {
-        host = 'https://photo-sharing-app-646.herokuapp.com'
-    }
-
-    var socket = io(host);
-
-    socket.on('connect', (socket) => {
-        console.log('Socket is connectedon front end.')
-        connected = true;
-    });
-
-    socket.on('status', function (data) {
-        showStatus(data.msg, data.delay);
-    })
-
-    socket.on('doUpdate', function () {
-        renderList();
-    })
 
     // Whenever the server emits 'new increment number', update the comment count.
     socket.on('new increment number', (data) => {
@@ -175,4 +155,8 @@ $(function () {
     const incrementComments = (num) => {
         $('.commentcount').text(num)
     }
-});
+};
+
+module.exports = {
+    init
+}

@@ -1,15 +1,16 @@
 import io from 'socket.io-client';
-import { ajax, showStatus } from './utils.js';
-require('./comments.js')
+import { ajax, showStatus, gethost } from './utils.js';
+import { init } from './comments.js';
 import '../scss/main.scss';
-var host = window.location.host;
-if (window.location.host == 'localhost:5000') {
-    host = 'http://' + window.location.host;
-} else {
-    host = 'https://photo-sharing-app-646.herokuapp.com'
-}
-var socket = io(host);
 
+var host = gethost();
+var socket = io(host);
+var patharray = window.location.pathname.split('/');
+ 
+
+if(patharray[1] == 'comments'){
+    init(host, socket)
+}
 socket.on('status', function (data) {
     showStatus(data.msg, data.delay);
 })
@@ -58,7 +59,7 @@ const renderList = () => {
                     <div class="overlay">
                         <div class="photocard__voteCtrl">
                             <button type="button" class="btn btn-light button__flex">
-                                <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `">
+                                <a href="javascript:void(0)" data-photoid="` + imageList[i]._id + `" class="voteUp">
                                     <img src="../images/voteup.png" alt="Click Here to Vote Up !">
                                     <h6>` + imageList[i].votes + `</h6>
                                 </a>
