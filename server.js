@@ -71,7 +71,7 @@ var knoxClient = knox.createClient({
 })
 
 //declare router and render index page
-if (process.env.NODE_ENV = 'development') {
+if (process.env.NODE_ENV === 'development') {
   var server = https.createServer({
     key:fs.readFileSync('./https/key.pem'),
     cert:  fs.readFileSync('./https/cert.pem'),
